@@ -14,6 +14,8 @@
 \usepackage[utf8]{inputenc} % para poder tener tildes, etc.
 \usepackage[english]{babel} % para poder tener tildes, etc.
 \usepackage{hyperref} % para poder hacer click en los enlaces
+\usepackage{tabularx} %Para que las tablas rompan lineas
+\usepackage{float} %Para que las cosas se queden en su sitio
 
 %% ----------------------------------------------------------------
 \begin{document}
@@ -108,7 +110,7 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 \acknowledgements{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
+The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
 
 }
 \clearpage  % End of the Acknowledgements
@@ -136,7 +138,8 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
 {
 % \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+\textbf{GPS} & \textbf{G}lobal \textbf{P}osition \textbf{S}ystem \\
+\textbf{IoT} & \textbf{I}nternet \textbf{O}f \textbf{T}hings\\
 
 }
 
@@ -180,7 +183,9 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 % Include the chapters of the thesis, as separate files
 % Just uncomment the lines as you write the chapters
 
-\input{Chapters/Chapter1} % Introduction
+\input{Chapters/Introduction} % Introduction
+
+\input{Chapters/StateOfTheArt} % State of the art
 
 %\input{Chapters/Chapter2} % Background Theory 
 
@@ -201,7 +206,7 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 
 \appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
 
-\input{Appendices/AppendixA}	% Appendix Title
+%\input{Appendices/AppendixA}	% Appendix Title
 
 %\input{Appendices/AppendixB} % Appendix Title
 

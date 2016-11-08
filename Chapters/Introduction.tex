@@ -1,0 +1,78 @@
+\chapter{Introduction}
+
+In this first chapter, the motivation of the project and its main objectives are stated. After that the time planification, employed technologies and the structure of the rest of the thesis are presented.
+
+\section{Motivation}
+
+Nowadays, with the penetration of new technologies such as smartphones and self driving cars, it is possible to share information about the state of the traffic on the transportation networks. This is very useful to have real time path finding algorithms that avoid congestion.
+
+Furthermore, vehicle to vehicle and vehicle to infrastructure communications has been researched for a long time\cite{yang_liu_zhao_vaidya} and is still being researched nowadays \cite{tuohy_glavin_hughes_jones_trivedi_kilmartin_2015}, and this is a direct application of it.
+
+One of the main concerns with this technology is its possible use for surveillance purposes, given the kind of data this system collects and uses privacy should not be overlooked.
+
+The motivation of this project comes from the necessity of developing a tool that allows us to study the behavior of simulated agents in a real scenario. This system is distributed due to its nature, and keeps the privacy of the users at every moment.
+
+The motivation of this project comes from the necessity of studying autonomous vehicles and how they behave depending on traffic. To achieve this goal a multiagent system that supports the usage of distributed agents will be developed. On it, multiple rerouting algorithms will be tested based on 
+\cite{nisan_2007} and results will be analyzed based on the real time state of the traffic.
+
+\section{Objectives}
+
+The main goals of the final master projects are:
+
+\begin{itemize}
+\item Analyze multiagent systems for traffic management
+\item Analyze the existing algorithms for traffic routing
+\item Propose an algorithm that analyzes the traffic in real time
+\item Study and analysis of the proposed algorithm
+\end{itemize}
+
+\section{Planification}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|X|l|X|}
+\hline 
+\textbf{Task} & \textbf{Planned hours} & \textbf{Goal} \\ 
+\hline 
+Study and installation of the JADE library & 10 hours & Understand how the library JADE works \\ 
+\hline 
+Development of a graph to represent the urban network & 5 hours & Complete the classes and files needed to represent the network \\ 
+\hline 
+Development of a communication protocol and its ontologies & 20 hours & Understand how the inter agent communication will be done \\ 
+\hline 
+Development of agents & - & - \\ 
+\hline 
+- Development of the first movile agents with JADE & 15 hours & Implement the vehicles \\ 
+\hline 
+- Development of the behaviur of the vehicles & 15 hours & Implement the logic of the vehicles \\ 
+\hline 
+- Development of segment agents & 15 hours & Implement the segments \\ 
+\hline 
+- Development of the agent that keeps the time & 10 hours & Implement a reliable and deterministic model of time \\ 
+\hline 
+- Development of the agent that launches the events & 10 hours & Implement an agent able to read events from file and launch them to the simulator \\ 
+\hline 
+Development of the graphical user interface & 25 hours & Implement a graphical user interface to view the results in real time \\ 
+\hline 
+Development of routing algorithms & 35 hours & Implement various routing algorithms \\ 
+\hline 
+Testing and optimizing the application & 40 hours & Stress testing the application \\ 
+\hline 
+Gathering of results & 10 hours & Running simulations and creating the graphs \\ 
+\hline 
+Documentation & 10 hours & Documentation of the communication protocols, ontologies and classes \\ 
+\hline 
+Writing the thesis & 80 hours & Writing of the thesis \\ 
+\hline 
+\textbf{TOTAL} & \textbf{300 hours} &  \\ 
+\hline 
+\end{tabularx}
+\caption{Time planification}
+\end{table}
+
+\section{Employed technologies}
+
+
+
+\section{Structure}
+
