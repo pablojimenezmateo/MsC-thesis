@@ -1,14 +1,14 @@
-\chapter{Development of the simulator}
+\chapter{The simulator}
 
-This chapter gives an overview of how the simulator has been developed, how its internal parts work and which communication schemes it uses.
+This chapter gives an overview of which parts is the simulator composed, how its internal parts work, which communication schemes it uses and how it works.
 
 JADE uses a peculiar system of agents and behaviors, agents represent a static class that keeps all the information stored but doesn't do anything by itself, that's the behaviors job. Behaviors are like scheduled actions for that specific class, such as moving the car this time unit or drawing the new added cars in the GUI.
 
 It is important for behaviors not take a lot of time, since that is the way to sharing computing time between resources, you execute your behavior and \textit{go to sleep} while other behaviors are executed. This makes for a really fast and efficient way of sharing resources if used correctly.
 
-In this simulator, every behavior takes on Tick (that's the unit of time in the simulator) to finish, then depending on its nature it will be repeated until an ending condition is reached.
+In this simulator, every behavior takes on Tick (it represent a second on the simulator timescale) to finish, then depending on its nature it will be repeated until an ending condition is reached.
 
-\section{Simulation files overview}
+\section{Simulator files overview}
 
 In this section an overview of what files and classes that are needed for the simulator as well as a brief overview of the classes will be done.
 
@@ -173,7 +173,7 @@ This are the files where the Map class takes its data:
 \item \textbf{steps}: A JSON file that contains the steps that make up a segment, remember that the steps are the graphical representation of the segment, whereas the segment does not have a representation by itself.
 \end{itemize}
 
-\subsubsection{images}
+\subsubsection{Images}
 
 There are also three images that are needed on this simulator:
 
@@ -182,4 +182,55 @@ There are also three images that are needed on this simulator:
 \item \textbf{legend.png}: This is a legend of the simulator, it helps interpreting the data.
 \item \textbf{red.png}: This is the image used to represent the road network, a Google Maps screenshot.
 \end{itemize}
+
+\section{Communication ontology}
+
+Due to the distributed nature of this simulator, all the communication between classes has to be done through messages. JADE allows us to set different kind of communication ontologies so classes know what type of arguments to expect and what to do with those arguments. We can see in \ref{ontologyScheme} the different communication ontologies used between classes, this simulator uses quite a few. A brief description of them is done in \ref{ontologiesTable}.
+
+\begin{table}[h]
+\centering
+\begin{adjustbox}{angle=90}    
+
+\begin{tabularx}{\textheight}{|X|c|c|c|X|}
+\hline 
+\textbf{Name} & \textbf{From} & \textbf{To} & \textbf{Arguments} & \textbf{Description} \\ 
+\hline 
+logOntology & Event manager agent & Interface agent & String & Tells the interface agent which text to add to the log panel \\ 
+\hline 
+drawOntology & Segment agent & Interface agent & String & Sends the information about the cars that have to be drawn \\ 
+\hline 
+newCarOntology & Car agent & Interface agent & String & Adds a car for the first time \\ 
+\hline 
+changeTickLengthOntology & Interface agent & Timekeeper agent & Integer & Changes the ticklength on the simulation \\ 
+\hline 
+tickOntology & Timekeeper agent & Car, segment and Manager agents & Long & Tells everyone to compute an additional tick \\ 
+\hline 
+numberOfCarsOntology & Timekeeper agent & Interface agent & Integer & Tells the interface how many cars are running in the simulation \\ 
+\hline 
+carToSegmentOntology & Car agent & Segment agent & String & Tells the segment to register, deregister or update this car \\ 
+\hline 
+deleteCarOntology & Car agent & Interface agent & String & Tells the interface to delete that car \\ 
+\hline 
+updateTimeOntology & Event manager agent & Interface agent & String & Tells the interface to update the displayed clock \\ 
+\hline 
+eventManagerToSegmentOntology & Event manager agent & Segment agent & String & Tells a segment to change its service level \\ 
+\hline 
+\end{tabularx}
+\end{adjustbox}
+\caption{The complete list of ontologies}
+\label{ontologiesTable}
+\end{table}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.8]{images/ontologyScheme80.png} 
+  \caption{Ontology communications scheme}
+  \label{ontologyScheme}
+\end{figure}
+
+\section{Types of events}
+
+\section{Service level of a segment}
+
+Depending on the density of a segment and its capacity, a quality of service is granted, this qualities 
 
