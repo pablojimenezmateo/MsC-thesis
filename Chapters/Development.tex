@@ -1,0 +1,185 @@
+\chapter{Development of the simulator}
+
+This chapter gives an overview of how the simulator has been developed, how its internal parts work and which communication schemes it uses.
+
+JADE uses a peculiar system of agents and behaviors, agents represent a static class that keeps all the information stored but doesn't do anything by itself, that's the behaviors job. Behaviors are like scheduled actions for that specific class, such as moving the car this time unit or drawing the new added cars in the GUI.
+
+It is important for behaviors not take a lot of time, since that is the way to sharing computing time between resources, you execute your behavior and \textit{go to sleep} while other behaviors are executed. This makes for a really fast and efficient way of sharing resources if used correctly.
+
+In this simulator, every behavior takes on Tick (that's the unit of time in the simulator) to finish, then depending on its nature it will be repeated until an ending condition is reached.
+
+\section{Simulation files overview}
+
+In this section an overview of what files and classes that are needed for the simulator as well as a brief overview of the classes will be done.
+
+\subsection{Agents}
+
+This subsection details the JADE agents used by the simulator.
+
+\subsubsection{Car agent}
+
+This agent represents a mobile vehicle with a set speed that moves from a starting point to a destination via valid paths. The route that follows is determined by the type of routing algorithm chosen.
+
+\subsubsection{Event manager agent}
+
+This agent reads all the events from a file and executes them at specific points in time, this helps the application to have a deterministic behavior if anyone wants to redo the experiments.
+
+\subsubsection{Interface agent}
+
+This agent is keeps all the information about the GUI and is the one that has to keep all its information updated. It also reads the user inputs (such as changing the timescale).
+
+\subsubsection{Segment agent}
+
+This agent represents a road side unit on one segment of the network, that is the connection between two intersections. The road side unit covers the full extent of the segment. All car agents register on it when entering and deregister when leaving, he is in charge of communicating the GUI the position of its car agents, so that the number of messages is reduced (from one message per car to one message per segment).
+
+\subsubsection{Time keeper agent}
+
+This agent keeps the simulation synchronized between all agents, this makes keeping track of time and making scheduled events possible. This is the key to make all the cars move at the same time and, schedule events at a certain moment of the day (such as 12:00).
+
+\subsection{Behaviors}
+
+This subsection details the behaviors used by the simulator.
+
+\subsubsection{Car behavior}
+
+This behavior is used by the Car agent and calculates the next graphical position of the car. It also registers and deregisters the car from the segments. Registering is done when the car enters in a new segment and deregistering is done when the car exits a segment.
+
+In every tick it moves and registers or deregisters of the segment if needed, this is a cyclic behavior that ends when the car reaches its destination.
+
+\subsubsection{Event manager behavior}
+
+This behavior is used by the Event manager agent. It executes the events that has in memory that have previously been read by its agent, if it is the time to execute that event it sends the instructions to the interested party. It also formats the time displayed in the GUI so that it is human readable.
+
+In every tick it sends all the necessary messages if a event is executes, it also sends a message to update the time. This is a cyclic behavior that ends when the simulation ends.
+
+\subsubsection{Interface add car behavior}
+
+This behavior is used by the Interface agent, it receives the instructions to create a new car (from the manager behavior) and creates the graphical representation of it and keeps it updated.
+
+In every tick it checks if a new car has to be added. This is a cyclic behavior that ends when the simulation ends.
+
+\subsubsection{Interface draw behavior}
+
+This behavior is used by the Interface agent (yes, agents can have more than one behavior) and it updates all the parts of the GUI. It updates all the cars position on the GUI, adds new cars to the GUI, deletes cars that have finished from the GUI and updates the time and the number of cars on the GUI.
+
+In every tick it checks whether he has to update the any part of the GUI or not (usually it has to update all the cars position since they move every tick). This is a cyclic behavior that ends when the simulation ends.
+
+\subsubsection{Segment listen behavior}
+
+This behavior is used by the Segment agent and listens to messages from cars to register or deregister, or to update their position. It also listens for messages from the Event manager in case it needs to change its service level.
+
+In every tick it checks for messages from cars or events and updates its lists of registered cars. This is a cyclic behavior that ends when the simulation ends.
+
+\subsubsection{Segment send to draw behavior}
+
+This behavior is used by the Segment agent and sends the information about the cars that are registered on it to the Interface agent so it updates the car positions.
+
+In every tick if there are any cars on it, it sends their information to the interface agent. This is a cyclic behavior that ends when the simulation ends.
+
+\subsection{Environmental classes}
+
+This subsection describes the classes that the simulator uses to model the road network.
+
+\subsubsection{Intersection}
+
+This class represents an intersection, that is a point on the map where one or more segments end or start. It is only possible for a car to change between segments here.
+
+\subsubsection{Segment}
+
+This class represents the connection between two intersections. Each segment has a origin and an end, it also keeps all the important information such as maximum speed, number of tracks and density. This class also has a list of steps that contain the information for its graphical representation.
+
+\subsubsection{Step}
+
+This class is used to represent a line in the canvas where the graphical map is drawn, it contains the $x$ and $y$ coordinates for the initial and ending point of that line, segments are usually made up of more than one step so its graphical representation is real life like.
+
+\subsubsection{Path}
+
+This class is used to keep the segments and steps that a car has to follow to get from its origin to its destination, this path can be dynamically computed depending on the algorithm of choice.
+
+\subsubsection{Map}
+
+This class represents the whole road network, it reads the data from file and instances all the necessary classes to build the directed graph, it also instances the segment agents. It provides many methods to work with the graph.
+
+\subsection{CanvasWorld}
+
+This class contains all the information that is needed to draw the GUI, it also contains an API that allows the Interface agent to modify its contents.
+
+\subsection{Main}
+
+This is the class that is called when the program is started it spawns the required JADE services. It also provides a few configuration options that are worth mentioning:
+
+\begin{itemize}
+\item \textbf{tickLength}: This parameter is used when the application is used in headless mode, that is without spawning the GUI, which is very useful for servers. This overwrites the default tickLength that is usually set by the user via a slider in the GUI. \textit{Default}: 1L
+\item \textbf{startingTick}: This is the tick at which the application starts, because this tick represents one simulation second you can do something like $7*3600 + 30*60$ to make it start at 7:30 am. \textit{Default}: $7*3600 + 59*60$
+\item \textbf{finishingTick}: This is the tick at which the simulation will end. \textit{Default}: $24*3600$
+\item \textbf{numberOfCars}: This parameter allows the user to put a certain number of smartcars at the beginning of the simulation, this is very useful for stress tests. \textit{Default}: 0
+\item \textbf{drawGUI}: This parameter allows running the application in headless mode. \textit{Default}: true
+\item \textbf{startRMA}: This parameter allows the control of starting the JADE Remote Agent Management, which is an interface to an administration panel for the agents. \textit{Default}: false
+\item \textbf{segmentLogging}: This parameter allows the control of the logging system. \textit{Default}: false
+\item \textbf{loggingDirectory}: This parameter allows us to change where the log files will be stored. \textit{Default}: ""
+\end{itemize}
+
+\subsection{Search algorithms}
+
+At the moment of writing this thesis, there are only three implemented algorithms. The simulator uses the Factory method programming pattern \cite{wikipedia_factory} so that if any researcher wants to add a new algorithm he or she can do it easily.
+
+\subsubsection{Shortest path algorithm}
+
+This algorithms is an implementation of the Dijkstra's algorithm \cite{wikipedia_dijkstra} that looks for the shortest path on the graph. Cars using this algorithm always take the same path given the same origin and the same destination.
+
+\subsubsection{Fastest path algorithm}
+
+This algorithm is a modification of Dijkstra's that focuses on time rather than on distance, this algorithm searches for the longest time for a given segment knowing the maximum speed of the car and of that segment. This \textbf{does not} take into account the state of the traffic.
+
+\subsubsection{Smartest path algorithm}
+
+This algorithm is yet another modification of Dijkstra's algorithm, this algorithm focuses on minimizing the trip time and takes into account the current traffic, so that if there is a congestion on a path and the average speed is slower, it will change to a longer path whose total trip time is lower.
+
+\subsection{Static files}
+
+This subsection will describe the static files that the simulator needs in order to run.
+
+\subsubsection{Events}
+
+A file of events is needed so the simulator can run them, the file should be in \textit{csv} format.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+\textbf{Type} & \textbf{Time} & \textbf{Origin} & \textbf{Ending} & \textbf{Maximum speed} & \textbf{Algorithm} \\ 
+\hline 
+newCar & 08:53 & I-CV10-08 & I-N340-07 & 86 & fastest \\ 
+\hline 
+newCar & 22:27 & I-AP7-01 & I-CV10-03 & 114 & shortest \\ 
+\hline 
+newCar & 11:07 & I-AP7-01 & I-CV10-04 & 86 & shortest \\ 
+\hline 
+newCar & 11:46 & I-CV10-04 & I-CS22-04 & 105 & smartest \\ 
+\hline 
+\end{tabular}
+\caption{A few rows of the events.csv file}
+\end{table}
+
+A Python script to generate this file is also provided in the root of the project, called \emph{generateRandomEvents.py} which allows for an easy creation of test files.
+
+\subsubsection{Map files}
+
+This are the files where the Map class takes its data:
+
+\begin{itemize}
+\item \textbf{intersections}: A JSON file containing the information about the intersections and their position on the graphical map.
+\item \textbf{segments}: A JSON file containing the information of the segments, including origin and destination, maximum speed, length, etc.
+\item \textbf{steps}: A JSON file that contains the steps that make up a segment, remember that the steps are the graphical representation of the segment, whereas the segment does not have a representation by itself.
+\end{itemize}
+
+\subsubsection{images}
+
+There are also three images that are needed on this simulator:
+
+\begin{itemize}
+\item \textbf{icon.png}: That's the icon that will appear on the top left corner of the GUI.
+\item \textbf{legend.png}: This is a legend of the simulator, it helps interpreting the data.
+\item \textbf{red.png}: This is the image used to represent the road network, a Google Maps screenshot.
+\end{itemize}
+

@@ -19,6 +19,9 @@
 
 %% ----------------------------------------------------------------
 \begin{document}
+
+\setcounter{tocdepth}{2} %-- part,chapters,sections, subsections
+
 \frontmatter      % Begin Roman style (i, ii, iii, iv...) page numbering
 
 % Set up the Title Page
@@ -138,9 +141,11 @@ The acknowledgments and the people to thank go here, don't forget to include you
 \listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
 {
 % \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+\textbf{API} & \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface\\
 \textbf{GPS} & \textbf{G}lobal \textbf{P}osition \textbf{S}ystem \\
+\textbf{GUI} & \textbf{G}raphical \textbf{U}ser \textbf{I}nterface\\
 \textbf{IoT} & \textbf{I}nternet \textbf{O}f \textbf{T}hings\\
-
+\textbf{WORA} & \textbf{W}rite \textbf{O}nce \textbf{R}un \textbf{A}nywhere\\
 }
 
 %% ----------------------------------------------------------------
@@ -186,6 +191,9 @@ The acknowledgments and the people to thank go here, don't forget to include you
 \input{Chapters/Introduction} % Introduction
 
 \input{Chapters/StateOfTheArt} % State of the art
+
+\input{Chapters/Development} % Development
+
 
 %\input{Chapters/Chapter2} % Background Theory 
 
