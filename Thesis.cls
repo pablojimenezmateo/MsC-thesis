@@ -234,23 +234,10 @@
 {
   \btypeout{Abstract Page}
   \thispagestyle{empty}
-  \null\vfil
+  \null%\vfil
   \begin{center}
-    \setlength{\parskip}{0pt}
-    {\normalsize \UNIVNAME \par}
-    \bigskip
     {\huge{\textit{Abstract}} \par}
-    \bigskip
-    {\normalsize \facname \par}
-    {\normalsize \deptname \par}
-    \bigskip
-    {\normalsize Master in Intelligent Systems\par}
-    \bigskip
-    {\normalsize\bf \@title \par}
-    \medskip
-    {\normalsize by \authornames \par}
-    \bigskip
-  \end{center}
+   \end{center}
 }
 {
   \vfil\vfil\vfil\null

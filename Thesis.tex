@@ -18,6 +18,33 @@
 \usepackage{float} %Para que las cosas se queden en su sitio
 \usepackage{adjustbox} %Para rotar cosas
 
+%This block makes the abstract normal again
+% \makeatletter
+% \if@titlepage
+%   \renewenvironment{abstract}{%
+%       \titlepage
+%       \null%\vfil This removes the verfital space on top
+%       \@beginparpenalty\@lowpenalty
+%       \begin{center}%
+%         \bfseries Abstract
+%         \@endparpenalty\@M
+%       \end{center}}%
+%      {\par\vfil\null\endtitlepage}
+% \else
+%   \renewenvironment{abstract}{%
+%       \if@twocolumn
+%         \section*{Abstract}%
+%       \else
+%         \small
+%         \begin{center}%
+%           {\bfseries Abstract\vspace{-.9em}\vspace{\z@}}%
+%         \end{center}%
+%         \quotation
+%       \fi}
+%       {\if@twocolumn\else\endquotation\fi}
+% \fi
+% \makeatother
+
 %% ----------------------------------------------------------------
 \begin{document}
 
@@ -86,10 +113,10 @@ Date:\\
 
 \null\vfill
 % Now comes the "Funny Quote", written in italics
-\textit{``Write a funny quote here.''}
+\textit{``Given the pace of technology, I propose we leave math to the machines and go play outside.''}
 
 \begin{flushright}
-If the quote is taken from someone, their name goes here
+Calvin, Bill Watterson's creation.
 \end{flushright}
 
 \vfill\vfill\vfill\vfill\vfill\vfill\null
@@ -101,7 +128,11 @@ If the quote is taken from someone, their name goes here
 \abstract{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+Nowadays, technology provides researchers a lot of data to work with. This data usually gives a good overview of how the people behave and is used for marketing purposes, but it can also help improving people lives.
+
+Smart cities and smart transport take advantage of this data to make the city more efficient, and the mobility more fluid. By changing traffic lights according to the needs, or reroute the traffic through a different path, the overall time spent on the road is reduced, and pollution is minimized.
+
+In this thesis, this problem is addressed, first a complete distributed multi agent system is developed to work with it as a testbed, then existing routing algorithms are discussed and a new smart algorithm is proposed. Finally, it is shown that the proposed algorithm behaves better, making the traffic on the road network more fluid.
 
 }
 
@@ -114,7 +145,9 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 \acknowledgements{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
+I want to thank Vicente Ram\'{o}n Tom\'{a}s L\'{o}pez for its patience and recommendations as my supervisor. I also want to thank my lab partner V\'{i}ctor P\'{e}rez Miralles, we spent so much time together in the lab, discussing ideas and helping each other. I want to thank Krakatoa, the mighty tea maker, I couldn't have done it without it.
+
+And, the most important thank you goes to my family, they have been helping me for a long time before this thesis, with their unconditional support and patience, and I am sure that will keep on with it, I would surely not be were I am without them.
 
 }
 \clearpage  % End of the Acknowledgements
@@ -145,7 +178,9 @@ The acknowledgments and the people to thank go here, don't forget to include you
 \textbf{API} & \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface\\
 \textbf{GPS} & \textbf{G}lobal \textbf{P}osition \textbf{S}ystem \\
 \textbf{GUI} & \textbf{G}raphical \textbf{U}ser \textbf{I}nterface\\
-\textbf{IoT} & \textbf{I}nternet \textbf{O}f \textbf{T}hings\\
+\textbf{IoT} & \textbf{I}nternet \textbf{o}f \textbf{T}hings\\
+\textbf{MAS} & \textbf{M}ulti \textbf{A}gent \textbf{S}ystem\\
+
 \textbf{WORA} & \textbf{W}rite \textbf{O}nce \textbf{R}un \textbf{A}nywhere\\
 }
 
@@ -177,7 +212,7 @@ The acknowledgments and the people to thank go here, don't forget to include you
 \setstretch{1.3}  % Return the line spacing back to 1.3
 
 \pagestyle{empty}  % Page style needs to be empty for this page
-\dedicatory{For/Dedicated to/To my\ldots}
+\dedicatory{Dedicated to my family}
 
 \addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
 
@@ -185,6 +220,10 @@ The acknowledgments and the people to thank go here, don't forget to include you
 %% ----------------------------------------------------------------
 \mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
 \pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+\fancyhf{}
+\fancyhead[L]{\rightmark}
+\fancyhead[R]{\thepage}
 
 % Include the chapters of the thesis, as separate files
 % Just uncomment the lines as you write the chapters
@@ -195,7 +234,11 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 \input{Chapters/Development} % Development
 
-\input{Chapters/Algorithms} % Algorithm overview
+%\input{Chapters/Algorithms} % Algorithm overview
+
+\input{Chapters/Tests} % Tested the system
+
+\input{Chapters/Conclusions} % Hopefully the last chapter
 
 %\input{Chapters/Chapter2} % Background Theory 
 
@@ -216,7 +259,7 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 \appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
 
-%\input{Appendices/AppendixA}	% Appendix Title
+\input{Appendices/Figures}	% Appendix Title
 
 %\input{Appendices/AppendixB} % Appendix Title
 

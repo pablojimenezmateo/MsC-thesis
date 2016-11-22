@@ -1,0 +1,31 @@
+\chapter{Conclusions and future work}
+\label{ch:conclusions}
+
+\section{Personal experience}
+
+This project was incredibly challenging, developing all the required models for the distributed multiple agent simulator took me longer than anticipated. This was also the most ambitious project I have ever developed, and I had to use every technique that I learned on the bachelor and on the master.
+
+As mentioned in previous chapters, I used the JADE library and open source implementation of a distributed communication framework. While working with it I found two bugs that I had reported, and many times the only workaround until the fix came was simply changing the source code, recompiling and carrying on. The documentation on this library is very good, but for advanced MAS it was a little bit short.
+
+I spent a big quantity of this projects time optimizing the system to support as many cars as possible, finding the limitations of this library at every corner. The biggest limitation that I found was how to deliver that many messages in a timely manner from the TimeKeeper agent to the rest of the agents to synchronize the simulation time, and that was my bottleneck for many weeks.
+
+Also, since the GUI is updating itself very fast, I had to use all the tricks in the manual to make it as efficient as possible, and I had to learn how the most advanced swing techniques had to be applied.
+
+Another big problem I had were the communication ontologies, I had to create unique ontologies so that the communication between agents could easily be extended.
+
+The development of the routing algorithms was also challenging, but I did learn a lot about graphs and its representation, I even made my own system to store that graph in a human readable way to a file. The smart algorithm was very difficult at first, I tried and failed with many implementations of that algorithm that finally weren't good and simple enough.
+
+In conclusion, I am incredibly proud of this project, it is modular, distributed, open source and I have employed many new technologies that I had never used before.
+
+\section{Conclusions}
+
+As has been shown in Chapter \ref{ch:tests} even with a very little userbase, big gains can be achieved. This kind of technology not only helps those that use it, although they are the more benefited, but helps every user of the network. The traffic becomes more fluid, travel times shorten and, because cars spend less time on the road, the level of pollution decreases.
+
+\section{Future work}
+
+Ideally, in the future a real life scenario can be set to test the results of this thesis, with just a little bit of hardware this could be tested on a small section of the network.
+
+Another model that could be tested on this MAS, now that is finished, is an algorithm that predicts which segments the cars that are in the network are going to take, and how that will affect the service level in the future. If the system were to know all the paths that all the cars want to take, further improvements could be achieved since no predictions would have to be made. But this last idea creates a privacy conflict and is why it has not been studied further.
+
+
+

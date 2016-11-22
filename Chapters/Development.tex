@@ -1,28 +1,29 @@
-\chapter{The simulator}
+\chapter{The multi agent system}
+\label{ch:multiagentsystem}
 
-This chapter gives an overview of which parts is the simulator composed, how its internal parts work, which communication schemes it uses and how it works.
+This chapter gives an overview of which parts is the MAS composed, how its internal parts work, which communication schemes it uses and how it works.
 
 JADE uses a peculiar system of agents and behaviors, agents represent a static class that keeps all the information stored but doesn't do anything by itself, that's the behaviors job. Behaviors are like scheduled actions for that specific class, such as moving the car this time unit or drawing the new added cars in the GUI.
 
 It is important for behaviors not take a lot of time, since that is the way to sharing computing time between resources, you execute your behavior and \textit{go to sleep} while other behaviors are executed. This makes for a really fast and efficient way of sharing resources if used correctly.
 
-In this simulator, every behavior takes on Tick (it represent a second on the simulator timescale) to finish, then depending on its nature it will be repeated until an ending condition is reached.
+In this MAS, every behavior takes one Tick (it represent a second on the simulator timescale) to finish, then depending on its nature it will be repeated until an ending condition is reached.
 
-\section{Simulator files overview}
+\section{Multi agent system models overview}
 
-In this section an overview of what files and classes that are needed for the simulator as well as a brief overview of the classes will be done.
+In this section an overview of the different models that the system uses will be done, as well as a brief definition of the implemented classes.
 
-\subsection{Agents}
+\subsection{Agent model}
 
-This subsection details the JADE agents used by the simulator.
+This subsection details the JADE agents used by the system.
 
 \subsubsection{Car agent}
 
-This agent represents a mobile vehicle with a set speed that moves from a starting point to a destination via valid paths. The route that follows is determined by the type of routing algorithm chosen.
+This agent represents a mobile vehicle with a set maximum speed that moves from a starting point to a destination via valid paths. The route that follows is determined by the type of routing algorithm chosen.
 
 \subsubsection{Event manager agent}
 
-This agent reads all the events from a file and executes them at specific points in time, this helps the application to have a deterministic behavior if anyone wants to redo the experiments.
+This agent reads all the events from a file and executes them at specific points in time, this helps the system to have a deterministic behavior if anyone wants to redo the experiments.
 
 \subsubsection{Interface agent}
 
@@ -36,9 +37,9 @@ This agent represents a road side unit on one segment of the network, that is th
 
 This agent keeps the simulation synchronized between all agents, this makes keeping track of time and making scheduled events possible. This is the key to make all the cars move at the same time and, schedule events at a certain moment of the day (such as 12:00).
 
-\subsection{Behaviors}
+\subsection{Behavior model}
 
-This subsection details the behaviors used by the simulator.
+This subsection details the behaviors used by the system.
 
 \subsubsection{Car behavior}
 
@@ -50,7 +51,7 @@ In every tick it moves and registers or deregisters of the segment if needed, th
 
 This behavior is used by the Event manager agent. It executes the events that has in memory that have previously been read by its agent, if it is the time to execute that event it sends the instructions to the interested party. It also formats the time displayed in the GUI so that it is human readable.
 
-In every tick it sends all the necessary messages if a event is executes, it also sends a message to update the time. This is a cyclic behavior that ends when the simulation ends.
+In every tick it sends all the necessary messages if a event is executed, it also sends a message to update the time. This is a cyclic behavior that ends when the simulation ends.
 
 \subsubsection{Interface add car behavior}
 
@@ -60,7 +61,7 @@ In every tick it checks if a new car has to be added. This is a cyclic behavior 
 
 \subsubsection{Interface draw behavior}
 
-This behavior is used by the Interface agent (yes, agents can have more than one behavior) and it updates all the parts of the GUI. It updates all the cars position on the GUI, adds new cars to the GUI, deletes cars that have finished from the GUI and updates the time and the number of cars on the GUI.
+This behavior is used by the Interface agent (agents can have more than one behavior) and it updates all the parts of the GUI. It updates all the cars position on the GUI, adds new cars to the GUI, deletes cars that have finished from the GUI and updates the time and the number of cars on the GUI.
 
 In every tick it checks whether he has to update the any part of the GUI or not (usually it has to update all the cars position since they move every tick). This is a cyclic behavior that ends when the simulation ends.
 
@@ -76,9 +77,9 @@ This behavior is used by the Segment agent and sends the information about the c
 
 In every tick if there are any cars on it, it sends their information to the interface agent. This is a cyclic behavior that ends when the simulation ends.
 
-\subsection{Environmental classes}
+\subsection{Representation model}
 
-This subsection describes the classes that the simulator uses to model the road network.
+This subsection describes the classes that the system uses to model the road network.
 
 \subsubsection{Intersection}
 
@@ -87,6 +88,12 @@ This class represents an intersection, that is a point on the map where one or m
 \subsubsection{Segment}
 
 This class represents the connection between two intersections. Each segment has a origin and an end, it also keeps all the important information such as maximum speed, number of tracks and density. This class also has a list of steps that contain the information for its graphical representation.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=2]{images/intersectionSegment.png} 
+  \caption{An example of segment and intersection}
+\end{figure}
 
 \subsubsection{Step}
 
@@ -121,7 +128,7 @@ This is the class that is called when the program is started it spawns the requi
 
 \subsection{Search algorithms}
 
-At the moment of writing this thesis, there are only three implemented algorithms. The simulator uses the Factory method programming pattern \cite{wikipedia_factory} so that if any researcher wants to add a new algorithm he or she can do it easily.
+At the moment of writing this thesis, there are only three implemented algorithms. The system uses the Factory method programming pattern \cite{wikipedia_factory} so that if any researcher wants to add a new algorithm he or she can do it easily. The algorithms are further explained in Chapter \ref{ch:stateoftheart}.
 
 \subsubsection{Shortest path algorithm}
 
@@ -135,9 +142,9 @@ This algorithm is a modification of Dijkstra's that focuses on time rather than 
 
 This algorithm is yet another modification of Dijkstra's algorithm, this algorithm focuses on minimizing the trip time and takes into account the current traffic, so that if there is a congestion on a path and the average speed is slower, it will change to a longer path whose total trip time is lower.
 
-\subsection{Static files}
+\subsection{Knowledge model}
 
-This subsection will describe the static files that the simulator needs in order to run.
+This subsection describes the files that make up the knowledge model database
 
 \subsubsection{Events}
 
@@ -183,9 +190,9 @@ There are also three images that are needed on this simulator:
 \item \textbf{red.png}: This is the image used to represent the road network, a Google Maps screenshot.
 \end{itemize}
 
-\section{Communication ontology}
+\section{Interaction model}
 
-Due to the distributed nature of this simulator, all the communication between classes has to be done through messages. JADE allows us to set different kind of communication ontologies so classes know what type of arguments to expect and what to do with those arguments. We can see in \ref{ontologyScheme} the different communication ontologies used between classes, this simulator uses quite a few. A brief description of them is done in \ref{ontologiesTable}.
+Due to the distributed nature of this simulator, all the communication between classes has to be done through messages. JADE allows us to set different kind of communication ontologies so classes know what type of arguments to expect and what to do with those arguments. We can see in Figure \ref{ontologyScheme} the different communication ontologies used between classes, this simulator uses quite a few. A brief description of them is done in Table \ref{ontologiesTable}.
 
 \begin{table}[h]
 \centering
@@ -230,7 +237,83 @@ eventManagerToSegmentOntology & Event manager agent & Segment agent & String & T
 
 \section{Types of events}
 
+Events are a powerful aspect of the simulator, events change the simulation in real time. Currently there are only 2 types of events supported on the simulator, adding a new car with all its parameters such as the kind of routing algorithm that it will use, its maximum speed, its origin and its destination.
+
+The second type of event is used to change the service level of a segment, this is very useful when trying to model the behavior of the agents in very specific or limit situations.
+
+Events are usually read from file at the start of the simulation, and are executed by the Event manager according to its schedule. Any kind of event can be added to this file, with the time (on the simulation) that has to be executed on.
+
 \section{Service level of a segment}
 
-Depending on the density of a segment and its capacity, a quality of service is granted, this qualities 
+Depending on the density of a segment and its capacity, a quality of service is granted, this gives information about the conditions of the traffic, speed, travel time, safety, etc.
+
+There are 6 main service levels according to Direcci\'{o}n General de Tr\'{a}fico in Spain as can be seen in Table \ref{serviceLevels}. The system also behaves appropriately on this sense and changes the service level dynamically. The GUI of the system allows to easily read on which service level each segment is.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.8]{images/legend.png} 
+  \caption{Legend of the system}
+  \label{legend}
+\end{figure}
+
+\begin{table}
+\begin{tabularx}{\textwidth}{|c|X|}
+\hline 
+\textbf{Service level} & \textbf{Description} \\ 
+\hline 
+A & Free circulation, freedom of movement, high speed \\ 
+\hline 
+B & Free circulation, less freedom of choosing track, maximum speed starts to be affected \\ 
+\hline 
+C & Still stable circulation, now choosing the desired track is more of an imposition of the traffic than the willingness of the driver, slower speed \\ 
+\hline 
+D & Instability, there is no freedom of choosing track, difficult keeping the same speed all the time \\ 
+\hline 
+E & Instability, circulation starts to stop for brief periods, speed no faster than 50km/h \\ 
+\hline 
+F & This state represents a traffic jam \\ 
+\hline 
+\end{tabularx}
+\caption{Service levels}
+\label{serviceLevels}
+\end{table}
+
+\section{Graphical user interface}
+
+When running a simulation in the MAS, it is helpful to have immediate feedback. As can be seen in the Figure \ref{gui}, a real time map of the traffic is depicted. Figure \ref{legend}, as mentioned before, shows an easily readable legend. Depending on which algorithm the agent is using, it is drawn with different colors, the same kind of feedback is obtained from the service level of the segments, they change their color to reflect their status.
+
+The GUI also displays a clock in the upper right corner, that is the time \textit{inside} the simulator, which in combination with the scrollpanel just bellow it that displays what is happening, allows the researcher to keep track of all the events at any point of the simulation.
+
+The last element of the GUI is a slider situated on the bottom right part, that allows the user to change the length between ticks (one tick represents one second inside the simulation), so special cases can be better studied.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.5]{images/gui.png} 
+  \caption{Graphical user interface}
+  \label{gui}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

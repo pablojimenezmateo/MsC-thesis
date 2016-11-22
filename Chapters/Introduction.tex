@@ -6,13 +6,9 @@ In this first chapter, the motivation of the project and its main objectives are
 
 Nowadays, with the penetration of new technologies such as smartphones and self driving cars, it is possible to share information about the state of the traffic on the transportation networks. This is very useful to have real time path finding algorithms that avoid congestion.
 
-Furthermore, vehicle to vehicle and vehicle to infrastructure communications has been researched for a long time\cite{yang_liu_zhao_vaidya} and is still being researched nowadays \cite{tuohy_glavin_hughes_jones_trivedi_kilmartin_2015}, and this is a direct application of it.
+Furthermore, vehicle to vehicle and vehicle to infrastructure communications has been researched for a long time \cite{yang_liu_zhao_vaidya} and is still being researched nowadays \cite{tuohy_glavin_hughes_jones_trivedi_kilmartin_2015}, and this is a direct application of it.
 
-One of the main concerns with this technology is its possible use for surveillance purposes, given the kind of data this system collects and uses privacy should not be overlooked.
-
-The motivation of this project comes from the necessity of developing a tool that allows us to study the behavior of simulated agents in a real scenario. This system is distributed due to its nature, and keeps the privacy of the users at every moment.
-
-The motivation of this project comes from the necessity of studying autonomous vehicles and how they behave depending on traffic. To achieve this goal a multiagent system that supports the usage of distributed agents will be developed. On it, multiple rerouting algorithms will be tested based on 
+The motivation of this project is to help research areas that study how autonomous and automatic systems can achieve a better network mobility thus reducing pollution. Developing a Multi Agent System to test different routing algorithms and even proposing a brief study on existing algorithms will help researchers to get to that goal. Multiple rerouting algorithms will be tested based on 
 \cite{nisan_2007} and results will be analyzed based on the real time state of the traffic.
 
 \section{Objectives}
@@ -21,9 +17,8 @@ The main goals of the final master project are:
 
 \begin{itemize}
 \item Development of a simulator to test traffic routing algorithms
-%\item Analyze multiagent systems for traffic management
 \item Analyze the existing algorithms for traffic routing
-\item Propose an algorithm that analyzes the traffic in real time
+\item Propose an algorithm that reacts to the traffic in real time
 \item Study and analysis of the proposed algorithm
 \end{itemize}
 
@@ -43,9 +38,9 @@ Development of a communication protocol and its ontologies & 20 hours & Understa
 \hline 
 Development of agents & - & - \\ 
 \hline 
-- Development of the first movile agents with JADE & 15 hours & Implement the vehicles \\ 
+- Development of the first mobile agents with JADE & 15 hours & Implement the vehicles \\ 
 \hline 
-- Development of the behaviur of the vehicles & 15 hours & Implement the logic of the vehicles \\ 
+- Development of the behavior of the vehicles & 15 hours & Implement the logic of the vehicles \\ 
 \hline 
 - Development of segment agents & 15 hours & Implement the segments \\ 
 \hline 
@@ -83,5 +78,15 @@ The maps image has been taken from a screen capture of Google Maps, the general 
 
 All the communication between nodes (cars and road side units in this scope) are made in a distributed way using the standalone library JADE \cite{jade}. JADE is a software framework for the development of applications using the agent paradigm and distributed communication. It complies with the FIPA specification \cite{fipa} and also comes with a few graphical tools to make the debugging and development of a distributed application easier, since it is a really difficult task due to its nature.
 
+The test files and the graphs have been made in Python, using the libraries Matplotlib and Numpy.
+
 \section{Structure}
+
+In the Chapter \ref{ch:stateoftheart} of this thesis, a brief overview on the state of the art is done. There a little bit of information and context is done about Smart cities and Smart transport, also a description is done about which routing algorithms that were evaluated for this MAS, and the benefits of each one, as well as some information about how they work. 
+
+In Chapter \ref{ch:multiagentsystem} the Multi agent system is explained, all its models, classes, agents and ontologies are described there.
+
+Chapter \ref{ch:tests} describes the tests that have been performed in the MAS, it also describes the graphics performed, it is shown that the proposed algorithm behaves better than the static ones.
+
+Finally, in Chapter \ref{ch:conclusions} a little bit of personal opinion, faced challenges and future work is discussed.
 
